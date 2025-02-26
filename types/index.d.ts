@@ -12,3 +12,7 @@ export interface GenresResponse {
 export interface NavigationProps {
   genres: Genre[];
 }
+
+export interface SearchbarProps {
+  isScrolled: boolean;
+}
