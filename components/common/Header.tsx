@@ -16,7 +16,8 @@ export default function Header(): JSX.Element {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      handleScroll.cancel(); // Cancel any pending throttled calls
+      handleScroll?.cancel?.();
+      // Cancel any pending throttled calls
     };
   }, []);
 

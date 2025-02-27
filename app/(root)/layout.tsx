@@ -20,7 +20,7 @@ export default async function RootLayout({
         <Navigation genres={genres} />
 
         {/* MOVIE GRID */}
-        <main className="flex-1  p-6">{children}</main>
+        <main className="flex-1  p-3">{children}</main>
       </div>
     </div>
   );

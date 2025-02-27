@@ -1,4 +1,5 @@
 'use client';
+import PageTitle from '@/components/ui/PageTitle';
 import { usePathname } from 'next/navigation';
 
 export default function GenrePage() {
@@ -7,9 +8,7 @@ export default function GenrePage() {
 
   return (
     <section>
-      <h2 className=" flex flex-col capitalize text-2xl font-light text-gray-light my-6 mx-3">
-        {genreName} <span className="uppercase text-sm font-bold">movies</span>
-      </h2>
+      <PageTitle title={genreName ?? 'Genre'} />
       {/* Możesz tutaj dodać logikę pobierania filmów na podstawie genre */}
       {/* SKELETONS */}
     </section>

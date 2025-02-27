@@ -8,7 +8,7 @@ export default function Searchbar({ isScrolled }: SearchbarProps) {
   const searchbarRef = useRef<HTMLDivElement>(null);
 
   const handleClick = () => {
-    if (isScrolled) {
+    if (isScrolled && !isExpanded) {
       setIsExpanded(true);
     }
   };
