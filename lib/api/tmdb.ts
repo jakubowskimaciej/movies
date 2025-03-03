@@ -1,57 +1,107 @@
-import { ApiResponse, Genre, GenresResponse, Movie } from '@/types';
+// lib/tmdb-api.ts
+import { ApiResponse, ErrorResponse, Genre, GenresResponse, Movie } from '@/types';
 
 const apiURL = 'https://api.themoviedb.org/3';
+const genreCache: { genres?: Genre[] } = {};
+
+function getApiKey(): string {
+  const key = process.env.NEXT_TMDB_API_KEY;
+  if (!key) {
+    throw new Error('TMDB API key is missing. Please check your environment variables.');
+  }
+  return key;
+}
 
 export async function getGenres(): Promise<Genre[]> {
+  if (genreCache.genres) {
+    return genreCache.genres;
+  }
   try {
-    const res = await fetch(`${apiURL}/genre/movie/list?api_key=${process.env.NEXT_TMDB_API_KEY}`);
+    const apiKey = getApiKey();
+    const res = await fetch(`${apiURL}/genre/movie/list?api_key=${apiKey}`);
+    const data = await res.json();
 
     if (!res.ok) {
-      const errorData = await res.json();
-      throw new Error(errorData?.status_message || 'Failed to fetch genres');
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch genres');
     }
 
-    const data: GenresResponse = await res.json();
-
-    if (!data.genres || data.genres.length === 0) {
+    const successData = data as GenresResponse;
+    if (!successData.genres || successData.genres.length === 0) {
       throw new Error('No genres found in the response');
     }
 
-    return data.genres;
+    genreCache.genres = successData.genres;
+    return successData.genres;
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      console.error('Error fetching genres:', error.message);
-    } else {
-      console.error('Unknown error occurred while fetching genres');
-    }
-    throw error; // Re-throw the error to be handled by the caller
+    console.error('Error fetching genres:', error instanceof Error ? error.message : 'Unknown error');
+    return [];
   }
 }
 
 export async function getPopularMovies(page: number = 1): Promise<Movie[]> {
-  const apiKey = process.env.NEXT_TMDB_API_KEY;
-
-  if (!apiKey) {
-    throw new Error('TMDB API key is missing. Please check your environment variables.');
+  if (page < 1) {
+    throw new Error('Page number must be greater than or equal to 1');
   }
-
-  const url = `${apiURL}/movie/popular?api_key=${apiKey}&page=${page}`;
-
   try {
-    const res = await fetch(url);
+    const apiKey = getApiKey();
+    const res = await fetch(`${apiURL}/movie/popular?api_key=${apiKey}&page=${page}`);
+    const data = await res.json();
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch data: ${res.status} ${res.statusText}`);
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch popular movies');
     }
 
-    const data: ApiResponse = await res.json();
-    return data.results;
-  } catch (error) {
-    if (error instanceof TypeError) {
-      console.error('Network error:', error);
-    } else {
-      console.error('API error:', error);
+    const successData = data as ApiResponse;
+    return successData.results;
+  } catch (error: unknown) {
+    console.error('Error fetching popular movies:', error instanceof Error ? error.message : 'Unknown error');
+    return [];
+  }
+}
+
+export async function fetchMoviesByCategory(category: string): Promise<Movie[]> {
+  const validCategories = ['popular', 'top_rated', 'upcoming', 'now_playing'] as const;
+  if (!validCategories.includes(category as (typeof validCategories)[number])) {
+    throw new Error(`Invalid category: ${category}`);
+  }
+  try {
+    const apiKey = getApiKey();
+    const res = await fetch(`${apiURL}/movie/${category}?api_key=${apiKey}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch movies by category');
     }
-    throw error;
+
+    const successData = data as ApiResponse;
+    return successData.results;
+  } catch (error: unknown) {
+    console.error('Error fetching movies by category:', error instanceof Error ? error.message : 'Unknown error');
+    return [];
+  }
+}
+
+export async function fetchMoviesByGenre(genreId: number): Promise<Movie[]> {
+  if (!Number.isInteger(genreId) || genreId < 1) {
+    throw new Error('genreId must be a positive integer');
+  }
+  try {
+    const apiKey = getApiKey();
+    const res = await fetch(`${apiURL}/discover/movie?api_key=${apiKey}&with_genres=${genreId}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch movies by genre');
+    }
+
+    const successData = data as ApiResponse;
+    return successData.results;
+  } catch (error: unknown) {
+    console.error('Error fetching movies by genre:', error instanceof Error ? error.message : 'Unknown error');
+    return [];
   }
 }

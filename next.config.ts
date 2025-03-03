@@ -20,7 +20,7 @@ module.exports = {
     return [
       {
         source: '/',
-        destination: '/popular',
+        destination: '/movies/popular',
         permanent: true, // 301 redirect
       },
     ];

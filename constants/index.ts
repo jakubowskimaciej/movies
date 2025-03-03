@@ -1,17 +1,19 @@
-export const sidebarLinks = [
+import { SidebarLink } from '@/types';
+
+export const sidebarLinks: SidebarLink[] = [
   {
     //   imgURL: "/icons/home.svg",
-    route: '/popular',
+    route: '/movies/popular',
     label: 'Popular',
   },
   {
     //   imgURL: "/icons/dollar-circle.svg",
-    route: '/top-rated',
+    route: '/movies/top_rated',
     label: 'Top Rated',
   },
   {
     //   imgURL: "/icons/transaction.svg",
-    route: '/upcoming',
+    route: '/movies/upcoming',
     label: 'Upcoming',
   },
 ];

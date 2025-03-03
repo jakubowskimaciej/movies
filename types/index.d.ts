@@ -13,6 +13,12 @@ export interface NavigationProps {
   genres: Genre[];
 }
 
+// types.ts
+export interface SidebarLink {
+  label: string;
+  route: string;
+}
+
 export interface SearchbarProps {
   isScrolled: boolean;
 }
@@ -20,13 +26,17 @@ export interface SearchbarProps {
 export interface Movie {
   id: number;
   title: string;
-  poster_path: string;
+  poster_path: string | null; // Może być null w odpowiedzi TMDb
   overview: string;
-  release_date: string;
+  release_date: string; // ISO 8601, np. "2023-01-01"
   vote_average: number;
+  genre_ids: number[]; // Poprawione z genreId na tablicę
+  backdrop_path?: string | null; // Opcjonalne, przydatne do tła
+  popularity?: number; // Opcjonalne, ale użyteczne
+  original_title?: string; // Opcjonalne, jeśli chcesz oryginalny tytuł
 }
 
-interface ApiResponse {
+export interface ApiResponse {
   page: number;
   results: Movie[];
   total_pages: number;
@@ -34,5 +44,19 @@ interface ApiResponse {
 }
 
 export interface MovieListProps {
-  movies: Movie[];
+  movies?: Movie[];
+}
+
+export interface PageProps {
+  params: {
+    category: string; // np. "popular"
+    genre: string; // np. "action"
+    genreId: number; // np. "28"
+  };
+}
+
+export interface ErrorResponse {
+  status_code: number;
+  status_message: string;
+  success: boolean;
 }
