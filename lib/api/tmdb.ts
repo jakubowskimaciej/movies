@@ -1,5 +1,5 @@
 // lib/tmdb-api.ts
-import { ApiResponse, ErrorResponse, Genre, GenresResponse, Movie } from '@/types';
+import { ApiResponse, ErrorResponse, Genre, GenresResponse, Movie, MovieCredits, MovieDetailsProps } from '@/types';
 
 const apiURL = 'https://api.themoviedb.org/3';
 const genreCache: { genres?: Genre[] } = {};
@@ -105,3 +105,64 @@ export async function fetchMoviesByGenre(genreId: number): Promise<Movie[]> {
     return [];
   }
 }
+
+export async function fetchMovieDetails(movieId: string): Promise<MovieDetailsProps | null> {
+  if (!movieId) {
+    console.error('Error: movieId is required');
+    return null;
+  }
+  try {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      throw new Error('API key is not available');
+    }
+    const res = await fetch(`${apiURL}/movie/${movieId}?api_key=${apiKey}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch movie details');
+    }
+
+    const movieData = data as MovieDetailsProps;
+    return movieData;
+  } catch (error: unknown) {
+    console.error('Error fetching movie details:', error instanceof Error ? error.message : 'Unknown error');
+    return null;
+  }
+}
+
+export async function fetchMovieCredits(movieId: string): Promise<MovieCredits | null> {
+  if (!movieId) {
+    console.error('Error: movieId is required');
+    return null;
+  }
+
+  try {
+    const apiKey = getApiKey();
+    if (!apiKey) {
+      throw new Error('API key is not available');
+    }
+
+    const res = await fetch(`${apiURL}/movie/${movieId}/credits?api_key=${apiKey}`);
+    const data = await res.json();
+
+    if (!res.ok) {
+      const errorData = data as ErrorResponse;
+      throw new Error(errorData.status_message || 'Failed to fetch movie credits');
+    }
+
+    const creditsData = data as MovieCredits;
+    return creditsData;
+  } catch (error: unknown) {
+    console.error('Error fetching movie credits:', error instanceof Error ? error.message : 'Unknown error');
+    return null;
+  }
+}
+
+export const getConfig = async (): Promise<ApiResponse> => {
+  const apiKey = getApiKey();
+  const data = await fetch(`${apiURL}/configuration?api_key=${apiKey}`);
+  const res = await data.json();
+  return res;
+};

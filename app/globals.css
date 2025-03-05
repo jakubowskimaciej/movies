@@ -39,7 +39,7 @@
 }
 
 .sidebar-link {
-  @apply flex text-gray-lighter border border-transparent rounded-full px-[26px] py-[5px] text-sm;
+  @apply flex text-gray-lighter border border-transparent rounded-full px-[26px] py-[5px] text-sm cursor-pointer;
 }
 
 .sidebar-link-active {
@@ -215,4 +215,15 @@
   50% {
     transform: scale(1.2, 1);
   }
+}
+
+.movie-details-col {
+  @apply w-full h-4/5 flex flex-col justify-start items-center;
+}
+.button-main {
+  @apply transition-all duration-150 ease-out border border-gray-400 text-gray-700 px-5 py-1  rounded-full;
+}
+
+.secondary {
+  @apply bg-gray-main text-white;
 }

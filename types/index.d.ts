@@ -52,6 +52,7 @@ export interface PageProps {
     category: string; // np. "popular"
     genre: string; // np. "action"
     genreId: number; // np. "28"
+    movieId: string;
   };
 }
 
@@ -59,4 +60,44 @@ export interface ErrorResponse {
   status_code: number;
   status_message: string;
   success: boolean;
+}
+
+export interface MovieDetailsProps {
+  id: number;
+  title: string;
+  overview: string;
+  release_date: string;
+  vote_average: number;
+  poster_path: string;
+  tagline: string;
+  original_language: string;
+  runtime: string;
+  spoken_languages: array;
+  genres: [Genre];
+}
+
+export interface Genre {
+  name: string;
+  id: number;
+}
+
+export interface MovieCredits {
+  id: string;
+  cast: CastMember[];
+  crew: CrewMember[];
+}
+
+interface CastMember {
+  id: number;
+  name: string;
+  character: string;
+  profile_path: string | null;
+}
+
+interface CrewMember {
+  id: number;
+  name: string;
+  job: string;
+  department: string;
+  profile_path: string | null;
 }

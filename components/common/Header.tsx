@@ -25,13 +25,7 @@ export default function Header(): JSX.Element {
     <header className="w-full p-4 flex justify-between items-center fixed top-0 left-0 z-50 transition-transform duration-300">
       {/* Div otaczający input, który będzie przesuwał się */}
       <Searchbar isScrolled={isScrolled} />
-      <button
-        disabled={isScrolled}
-        className={clsx(
-          'transition-all duration-300 ease border border-gray-400 text-gray-700 px-5 py-1 mr-10 rounded-full',
-          isScrolled && 'opacity-0'
-        )}
-      >
+      <button disabled={isScrolled} className={clsx('button-main', isScrolled && 'opacity-0')}>
         Login
       </button>
     </header>
