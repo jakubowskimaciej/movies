@@ -27,6 +27,7 @@ export default async function MovieDetails({ params }: PageProps) {
 
   return (
     <section className="w-full grid grid-cols-1 xl:grid-cols-[0.45fr_1fr] justify-items-center gap-8 pt-5 text-gray-main">
+      {/* left column */}
       <div className="movie-details-col ">
         <Image
           src={posterLink + 'w780' + movieDetails.poster_path}
@@ -47,7 +48,7 @@ export default async function MovieDetails({ params }: PageProps) {
           </div>
         </div>
       </div>
-      {/* left column */}
+      {/* right column */}
       <div className="w-[80%] flex flex-col  border border-gray-300 py-2 px-3">
         {/* title & rating */}
         <div>

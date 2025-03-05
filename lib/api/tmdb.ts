@@ -159,10 +159,3 @@ export async function fetchMovieCredits(movieId: string): Promise<MovieCredits |
     return null;
   }
 }
-
-export const getConfig = async (): Promise<ApiResponse> => {
-  const apiKey = getApiKey();
-  const data = await fetch(`${apiURL}/configuration?api_key=${apiKey}`);
-  const res = await data.json();
-  return res;
-};
