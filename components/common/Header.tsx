@@ -2,7 +2,7 @@
 import { useState, useEffect, JSX } from 'react';
 import { throttle } from 'lodash';
 import clsx from 'clsx';
-import Searchbar from '../ui/Searchbar';
+import Searchbar from './Searchbar';
 
 export default function Header(): JSX.Element {
   const [isScrolled, setIsScrolled] = useState(false);

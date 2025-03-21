@@ -1,6 +1,5 @@
 import { fetchMovieCredits, fetchMovieDetails } from '@/lib/api/tmdb';
 import { Genre, MovieCredits, MovieDetailsProps, PageProps } from '@/types';
-import getConfig from 'next/config';
 import Image from 'next/image';
 import Link from 'next/link';
 

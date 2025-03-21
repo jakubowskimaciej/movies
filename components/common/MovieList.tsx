@@ -24,10 +24,10 @@ export default function MovieList({ movies }: MovieListProps) {
               alt={`Poster for ${movie.title}`}
               width={342} // Ustalony rozmiar dla stałych wymiarów
               height={512}
-              className="object-contain rounded-xl h-[340px] transition-transform duration-300 ease-out scale-100 hover:scale-[1.03]"
+              className="object-cover rounded-xl h-[340px] transition-transform duration-300 ease-out scale-100 hover:scale-[1.03]"
               priority
             />
-            <div className="w-full flex flex-col pt-3 pb-5  justify-center items-center text-xs  tracking-wide">
+            <div className="w-full flex flex-col pt-3 pb-5  justify-center items-center text-xs text-center tracking-wide">
               <p>{movie.title}</p>
               <p>{movie.vote_average}</p>
             </div>

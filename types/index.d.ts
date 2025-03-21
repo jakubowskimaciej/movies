@@ -17,6 +17,7 @@ export interface NavigationProps {
 export interface SidebarLink {
   label: string;
   route: string;
+  icon: string;
 }
 
 export interface SearchbarProps {
